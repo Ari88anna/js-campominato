@@ -9,64 +9,93 @@
 
 
 
-
-//Generare 16 numeri "bomba" random (non duplicati) tra 1 e 100 e metterli in un array vuoto
-// mi servirà un ciclo while per generare 16 numeri random non duplicati
+// 1. Generare bombe
+// mi servirà un ciclo while (per generare 16 numeri random (da 1 a 100)) 
+// il ciclo va avanti finchè il contenitore delle bombe non è popolato di 16 elementi
 
 var arrayBombNumber = [];
 
+var numeroMassimo = 5;
+var numeroBombe = 2;
 
-while ( arrayBombNumber.length < 16 ) {
-    var randomNum = getRandomNum(1, 100);
+while ( arrayBombNumber.length < numeroBombe ) {
+
+    var randomNum = getRandomNum(numeroMassimo);
 
     if( arrayBombNumber.includes(randomNum) == false) {
         arrayBombNumber.push(randomNum)
-    }
-    
+    }    
 }
 console.log(arrayBombNumber)    
+
+
+
+// 2. Chiediamo i numero all'utente
+
 
 // creo variabile array vuoto dove pushare i numeri corretti
 var arrayUserAttempt = [];
 
-// creo variabile flag che mi dice se la bomba non è stata trovata
-var userNum = 0;
+// creo variabile flag che mi dice se la bomba è stata trovata
+var bombaTrovata = false;
 // chiedere all'utente di inserire un numero (non duplicato) tra 1 e 100 per 84 volte con ciclo while
-        // il ciclo while deve andare avanti fino a che il numero non è un numero "bomba" e fino ad 84 volte
+// il ciclo while deve andare avanti fino a che il numero non è un numero "bomba" e fino ad 84 volte
 
-                // se il numero inserito è arrayBombNumber.includes --true
-                // altrimenti se  -- push nell'array dell'utente
-while ( (arrayBombNumber.includes(userNum) == false ) && ( arrayUserAttempt.length < 3 )) {
+                
 
-    userNum = parseInt(prompt('dimmi un numero'));
+while ( ( arrayUserAttempt.length < (numeroMassimo - numeroBombe) ) && ( bombaTrovata === false ) ) {
+
+    var userNum = parseInt(prompt('dimmi un numero'));
+
     
+    // se il numero inserito è una bomba: bombaTrovata diventa true
+    
+    // dopo aver controllato che non sia compreso tra quelli già inseriti.
+        
     if ( arrayBombNumber.includes(userNum)) {  
         
-        alert('hai preso una bomba!')        
+        bombaTrovata = true;
 
-    } else if ( arrayUserAttempt.includes(userNum) == false) {
+    } else  {
+        // altrimenti se il numero inserito non è una bomba -- push nell'array dell'utente,
+        if( arrayUserAttempt.includes(userNum) == false ) {
 
-        arrayUserAttempt.push(userNum);
+            arrayUserAttempt.push(userNum);
+        } else {
+            alert ('questo numero è gia stato inserito, inseriscine un altro');
+        }
+        
 
-    } else if ( arrayUserAttempt.includes(userNum) == true ) {
-
-        userNum = alert('per favore inserisci numeri diversi');    
-    }
+    } 
     
 }
 
 console.log(arrayUserAttempt)
 
 
-// stampo all'utente la length dei numeri corretti
- document.getElementById('count').innerHTML = arrayUserAttempt.length
 
+// 3. Stampiamo l'esito
+var messaggio = 'hai vinto';
+
+if (bombaTrovata) {
+
+    messaggio = 'hai perso'
+
+} 
+
+alert (messaggio)
+
+var totaleNumeriInseriti = arrayUserAttempt.length;
+// stampo all'utente la length dei numeri corretti
+ document.getElementById('count').innerHTML = totaleNumeriInseriti;
 
 
 
 //FUNZIONI
 
 // funzione per generare un numero random
-function getRandomNum(min, max) {
-    return Math.floor(Math.random() * (max - min) ) + min;
-  }
+function getRandomNum(max) {
+    return Math.floor(Math.random() * (max)) + 1 ;
+}
+
+
